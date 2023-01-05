@@ -5,7 +5,9 @@ using System.Text;
 
 namespace Signature.WebAPI.Helpers
 {
+#pragma warning disable S1118 // Utility classes should not have public constructors
     public class GenericHelper
+#pragma warning restore S1118 // Utility classes should not have public constructors
     {
         /// <summary>
         /// Method to generate a security hash
@@ -15,7 +17,9 @@ namespace Signature.WebAPI.Helpers
         /// <returns></returns>
         internal static string GeneratedSignature(Object? oHash, String sTimeStamp)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return GenericHelper.GenerateSHA256(OrderObjectPropertiesValuesAlphabetically(oHash) + sTimeStamp + "IntegracionAPI15032018");
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         /// <summary>
@@ -25,9 +29,11 @@ namespace Signature.WebAPI.Helpers
         /// <returns>hashed string</returns>
         internal static string GenerateSHA256(string stringToHash)
         {
-            string hashedString = null;
+            string? hashedString = null;
 
+#pragma warning disable SYSLIB0021 // Type or member is obsolete
             SHA256 mySHA256 = SHA256Managed.Create();
+#pragma warning restore SYSLIB0021 // Type or member is obsolete
             byte[] hashedSignature = mySHA256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(stringToHash));
             hashedString = ByteArrayToHex(hashedSignature);
 
@@ -48,7 +54,9 @@ namespace Signature.WebAPI.Helpers
                 return BitConverter.ToString(array).Replace("-", string.Empty);
             }
 
+#pragma warning disable CS8603 // Possible null reference return.
             return null;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         /// <summary>
@@ -75,7 +83,9 @@ namespace Signature.WebAPI.Helpers
                             }
                             else if (type.Equals(typeof(decimal)) || type.Equals(typeof(decimal?)))
                             {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                 result.Append(pi.GetValue(obj, null).ToString().Replace(",", "."));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                             }
                             else if (type.Equals(typeof(Boolean?)))
                             {
@@ -91,6 +101,8 @@ namespace Signature.WebAPI.Helpers
                             }
                             else if (type.IsArray)
                             {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                 foreach (var p in (Array)pi.GetValue(obj, null))
                                 {
                                     Type type2 = p.GetType();
@@ -104,9 +116,13 @@ namespace Signature.WebAPI.Helpers
                                         result.Append(OrderObjectPropertiesValuesAlphabetically(p));
                                     }
                                 }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                             }
                             else if (type.IsGenericType)
                             {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                 foreach (var g in (IEnumerable)pi.GetValue(obj, null))
                                 {
                                     Type type2 = g.GetType();
@@ -120,14 +136,20 @@ namespace Signature.WebAPI.Helpers
                                         result.Append(OrderObjectPropertiesValuesAlphabetically(g));
                                     }
                                 }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                             }
                             else if (type.IsEnum)
                             {
+#pragma warning disable CS8605 // Unboxing a possibly null value.
                                 result.Append((int)pi.GetValue(obj, null));
+#pragma warning restore CS8605 // Unboxing a possibly null value.
                             }
                             else
                             {
+#pragma warning disable CS8604 // Possible null reference argument.
                                 result.Append(OrderObjectPropertiesValuesAlphabetically(pi.GetValue(obj, null)));
+#pragma warning restore CS8604 // Possible null reference argument.
                             }
                         }
                         string strProcesoif = result.ToString();
