@@ -48,8 +48,9 @@ namespace Signature.WebAPI.Controllers
                     sGenerateSignatureInput = GenericHelper.GeneratedSignature(objTicketPromotionsRequestNew, strTimeStamp);
                     break;
                 case "/SetTicket":
-                    break;
                 case "/SetRefundTicket":
+                    var objPOSDocumentsCOFORequest = JsonConvert.DeserializeObject<POSDocumentsCOFORequest>(jsonString);
+                    sGenerateSignatureInput = GenericHelper.GeneratedSignature(objPOSDocumentsCOFORequest, strTimeStamp);
                     break;
                 case "/GetDeliveryNotes":
                     var objDeliveryNotesRequest = JsonConvert.DeserializeObject<DeliveryNotesRequest>(jsonString);
